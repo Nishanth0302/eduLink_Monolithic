@@ -33,14 +33,13 @@ public class AppUserRepositoryTest {
     }
 
     @Test
-    public void findUserByEmailTest(){
+
     public void findUserByEmailTest_200(){
         Optional<AppUser> appUserOptional = appUserRepository.findAppUserByUserEmail("nikhil@gmail.com");
         assertTrue(appUserOptional.isPresent());
     }
 
     @Test
-    public void findUserByPhoneNumberTest(){
     public void findUserByPhoneNumberTest_200(){
         Optional<AppUser> appUserOptional = appUserRepository.findAppUserByUserPhoneNumber(123242112L);
         assertTrue(appUserOptional.isPresent());

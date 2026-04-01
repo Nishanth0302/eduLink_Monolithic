@@ -1,6 +1,8 @@
 package com.cts.eduLink.application.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,9 +11,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Getter
-@Setter
-public class Faculty {
+
+@Data
+public class Faculty extends AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,4 +36,6 @@ public class Faculty {
             inverseJoinColumns = @JoinColumn(name = "course_id")
     )
     private Set<Course> courseSet = new HashSet<>();
+
+
 }
