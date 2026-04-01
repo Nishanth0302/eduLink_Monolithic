@@ -63,15 +63,9 @@ public class FacultyServiceImpl implements IFacultyService {
     @org.springframework.transaction.annotation.Transactional
     public String updateFaculty(Long facultyId, FacultyRegistrationDto dto) {
         log.info("Updating faculty profile for ID: {}", facultyId);
-
-        // Find existing faculty or throw exception
         Faculty existingFaculty = facultyRepository.findFacultyById(facultyId)
                 .orElseThrow(() -> new FacultyException("Faculty not found with ID: " + facultyId, org.springframework.http.HttpStatus.NOT_FOUND));
-
-        // Use utility to map DTO fields to existing entity
         DtoMapper.updateFacultyFromDto(existingFaculty, dto);
-
-        // Save updated entity (JPA identifies this as an update because the ID is present)
         facultyRepository.save(existingFaculty);
 
         log.info("Faculty profile updated successfully for ID: {}", facultyId);
@@ -125,7 +119,6 @@ public class FacultyServiceImpl implements IFacultyService {
                 case "facultyAddress":
                     faculty.setFacultyAddress((String) value);
                     break;
-                // Add other fields as needed
             }
         });
 
@@ -137,12 +130,8 @@ public class FacultyServiceImpl implements IFacultyService {
     @org.springframework.transaction.annotation.Transactional
     public String deleteFaculty(Long facultyId) {
         log.info("Deletion request initiated for Faculty ID: {}", facultyId);
-
-        // Check if faculty exists using your existing repository method
         Faculty faculty = facultyRepository.findFacultyById(facultyId)
                 .orElseThrow(() -> new FacultyException("Faculty not found with ID: " + facultyId, org.springframework.http.HttpStatus.NOT_FOUND));
-
-        // Delete the entity
         facultyRepository.delete(faculty);
 
         log.info("Faculty ID: {} and associated user deleted successfully", facultyId);
@@ -152,14 +141,8 @@ public class FacultyServiceImpl implements IFacultyService {
     @Override
     public FacultyDashboardDto getFacultyDashboard(Long facultyId) {
         log.info("Generating dashboard data for faculty: {}", facultyId);
-
-        // 1. Get the course count from CourseRepository
         int courses = courseRepository.getFacultyCourseCount(facultyId);
-
-        // 2. Get the exam count from FacultyRepository (or ExamRepository)
         int exams = facultyRepository.getUpcomingExamsCount(facultyId);
-
-        // 3. Combine them into the DTO
         FacultyDashboardDto dashboard = new FacultyDashboardDto();
         dashboard.setCourseCount(courses);
         dashboard.setUpcomingExamsCount(exams);
@@ -176,7 +159,6 @@ public class FacultyServiceImpl implements IFacultyService {
             log.warn("Faculty not found with id: {}", facultyId);
             return List.of();
         }
-
         Faculty faculty = facultyOptional.get();
         List<Course> courses = new ArrayList<>(faculty.getCourseSet());
         log.debug("Found {} courses for faculty: {}", courses.size(), facultyId);
@@ -191,31 +173,8 @@ public class FacultyServiceImpl implements IFacultyService {
         return facultyRepository.getUpcomingExamsCount(facultyId);
     }
 
-
-//    @Override
-//    public Long getTotalStudents(Long facultyId) {
-//        log.debug("Fetching total students for faculty: {}", facultyId);
-//        Optional<Faculty> facultyOptional = facultyRepository.findFacultyById(facultyId);
-//
-//        if (facultyOptional.isEmpty()) {
-//            log.warn("Faculty not found with id: {}", facultyId);
-//            return 0L;
-//        }
-//
-//        Faculty faculty = facultyOptional.get();
-//
-//        // Get all unique students from faculty's courses
-//        Set<Student> uniqueStudents = faculty.getCourseSet().stream()
-//                .flatMap(course -> course.getStudentSet().stream())
-//                .collect(Collectors.toSet());
-//
-//        long totalStudents = uniqueStudents.size();
-//        log.debug("Found {} total students for faculty: {}", totalStudents, facultyId);
-//        return totalStudents;
-//    }
     public Optional<FacultyProjection> getFacultyProfile(Long facultyId) throws FacultyException {
         return facultyRepository.findFacultyProfile(facultyId);
     }
-
 }
 

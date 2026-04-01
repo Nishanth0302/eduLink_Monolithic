@@ -10,7 +10,7 @@ spring:
   application:
     name: ems
   datasource:
-    url: jdbc:mysql://localhost:3306/eduLink
+    url: jdbc:mysql://localhost:3306/edulink
     username: ${username}
     password: ${password}
     driver-class-name: com.mysql.cj.jdbc.Driver

@@ -27,6 +27,6 @@ public class AssignmentDto {
     private String assignmentStatus;
     private int totalMarks;
     @NotNull(message = "Course ID is required")
-    private Long courseId; // we dont pass whole chourse obj so we pass courseId
+    private Long courseId;
 
 }

@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Slf4j
 @RequestMapping("/attendance")
-public class AttendanceController {
+public class        AttendanceController {
 
     private final IAttendanceService attendanceService;
     @PreAuthorize("hasRole('STUDENT')")

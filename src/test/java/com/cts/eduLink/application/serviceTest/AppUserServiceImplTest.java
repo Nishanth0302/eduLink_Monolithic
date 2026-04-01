@@ -38,14 +38,18 @@ public class AppUserServiceImplTest {
     }
 
     @Test
-    public void appUserRegistration_200(){
+    public void appUserRegistration_200() throws AppUserException {
+        // 1. Stubbing (Arrange)
         when(appUserRepository.findAppUserByUserEmail("nikhil@cognizant.com")).thenReturn(Optional.empty());
         when(appUserRepository.findAppUserByUserPhoneNumber(1222222221L)).thenReturn(Optional.empty());
 
-//        assertEquals(appUser.get().getUserName()+" added SuccessFully",appUserService.registerAppUser(appUser.get()),"Test Case Passed");
+        // 2. ACT - This was missing in your code
+        appUserService.registerAppUser(appUser.get());
 
-        verify(appUserRepository,times(1)).findAppUserByUserEmail("nikhil@cognizant.com");
-        verify(appUserRepository,times(1)).findAppUserByUserPhoneNumber(1222222221L);
+        // 3. Verification (Assert)
+        verify(appUserRepository, times(1)).findAppUserByUserEmail("nikhil@cognizant.com");
+        verify(appUserRepository, times(1)).findAppUserByUserPhoneNumber(1222222221L);
+        verify(appUserRepository, times(1)).save(appUser.get()); // Also verify the save call
     }
 
     @Test

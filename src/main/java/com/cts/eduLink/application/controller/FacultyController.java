@@ -40,10 +40,8 @@ public class FacultyController {
 
     @PreAuthorize("hasRole('FACULTY')")
     @PatchMapping("/patch/{facultyId}")
-    public ResponseEntity<String> patchFaculty(
-            @Valid @PathVariable Long facultyId,
+    public ResponseEntity<String> patchFaculty(@Valid @PathVariable Long facultyId,
             @RequestBody Map<String, Object> updates) {
-
         log.info("Received patch request for facultyId: {}", facultyId);
         String response = facultyService.patchFaculty(facultyId, updates);
         return ResponseEntity.ok(response);
@@ -91,7 +89,5 @@ public class FacultyController {
         int count = facultyService.getupComingExamsCount(facultyId);
         return Map.of("upComing Exams", count);
     }
-
-
-
 }
+

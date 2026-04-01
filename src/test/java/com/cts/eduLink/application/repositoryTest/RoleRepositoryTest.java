@@ -33,7 +33,6 @@ public class RoleRepositoryTest {
         roleList = new ArrayList<>();
     }
     @Test
-
     public void getRoleList_200(){
         roleList = roleRepository.findAll();
         for(Role r:roleList){

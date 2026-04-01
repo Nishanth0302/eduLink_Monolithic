@@ -30,7 +30,6 @@ public class ExamController {
     @PostMapping("/register")
     public ResponseEntity<String> createExam(@Valid @RequestBody ExamCreationRequestDto request) {
         log.info("Creating a new exam: {}", request.getExamName());
-        examService.createExam(request);
         return  ResponseEntity.status(200).body(examService.createExam(request));
     }
 

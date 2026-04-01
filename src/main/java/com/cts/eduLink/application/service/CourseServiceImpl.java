@@ -50,24 +50,16 @@ public class CourseServiceImpl implements ICourseService {
         courseRepository.save(course);
         log.info("Course with id {} saved successFully into database", course.getCourseId());
         return "Course has registered successFully with course Id: " + course.getCourseId();
-//        return "Course has registered successFully"; // for testing
     }
 
     @Override
     @Transactional
     public String updateCourse(Long courseId, CourseRegistrationDto courseRegistrationDto) {
         log.info("Updating course details for Course ID: {}", courseId);
-
-        // 1. Find existing course or throw exception
         Course existingCourse = courseRepository.findByCourseId(courseId)
                 .orElseThrow(() -> new CourseException("Course not found with ID: " + courseId, HttpStatus.NOT_FOUND));
-
-        // 2. Map DTO fields to existing entity using utility
         DtoMapper.updateCourseFromDto(existingCourse, courseRegistrationDto);
-
-        // 3. Save the updated entity
         courseRepository.save(existingCourse);
-
         log.info("Course ID: {} updated successfully", courseId);
         return "Course updated successfully!";
     }
@@ -76,12 +68,8 @@ public class CourseServiceImpl implements ICourseService {
     @Transactional
     public String patchCourse(Long courseId, Map<String, Object> updates) {
         log.info("Patch update initiated for Course ID: {}", courseId);
-
-        // 1. Find the existing course
         Course course = courseRepository.findByCourseId(courseId)
                 .orElseThrow(() -> new CourseException("Course not found with ID: " + courseId, HttpStatus.NOT_FOUND));
-
-        // 2. Iterate through the map and update only provided fields
         updates.forEach((key, value) -> {
             if (value != null) {
                 switch (key) {
@@ -103,8 +91,6 @@ public class CourseServiceImpl implements ICourseService {
                 }
             }
         });
-
-        // 3. Save the partially updated entity
         courseRepository.save(course);
         log.info("Course ID: {} partially updated successfully", courseId);
         return "Course partially updated successfully!";
@@ -114,13 +100,8 @@ public class CourseServiceImpl implements ICourseService {
     @org.springframework.transaction.annotation.Transactional
     public String deleteCourse(Long courseId) {
         log.info("Deletion request initiated for Course ID: {}", courseId);
-
-        // 1. Find the existing course or throw exception
         Course course = courseRepository.findByCourseId(courseId)
                 .orElseThrow(() -> new CourseException("Course not found with ID: " + courseId, HttpStatus.NOT_FOUND));
-
-        // 2. Delete the course
-
         course.setCourseStatus("INACTIVE");
 
         log.info("Course ID: {} deleted successfully", courseId);
@@ -196,6 +177,7 @@ public class CourseServiceImpl implements ICourseService {
         return "Thanks for you feedBack!";
     }
 
+    @Override
     public int getFacultyCourseCount(Long facultyId) {
         int count = courseRepository.getFacultyCourseCount(facultyId);
         return count;
@@ -218,58 +200,3 @@ public class CourseServiceImpl implements ICourseService {
         return courseDetailProjections;
     }
 }
-//    @Service
-//    @AllArgsConstructor
-//    @Slf4j
-//    public class FacultyServiceImpl implements IFacultyService {
-//
-//        private final FacultyRepository facultyRepository;
-//        private final AppUserServiceImpl appUserService;
-//        private final RoleRepository roleRepository;
-//
-//        @Override
-//        public String registerFaculty(FacultyRegistrationDto facultyRegistrationDto) {
-//
-//            log.debug("AppUser and Faculty separation initiated");
-//            AppUser appUser = DtoMapper.appUserDtoSeparator(facultyRegistrationDto);
-//            Faculty faculty = DtoMapper.facultyDtoSeparator(facultyRegistrationDto);
-//            Optional<Role> role = roleRepository.findRoleByName("FACULTY");
-//
-//            appUser.setRole(role.get());
-//            log.debug("appUser instance has sent for registration");
-//            appUserService.registerAppUser(appUser);
-//            faculty.setAppUser(appUser);
-//            facultyRepository.save(faculty);
-//            log.info("faculty entity has saved into database for {}",appUser.getUserEmail());
-//            return "You have registered SuccessFully, your login id is: "+faculty.getFacultyId();
-//        }
-//
-//        @Override
-//        public List<FacultyDetailProjection> filterFacultyByRating(int facultyRating) throws FacultyException {
-//            log.info("Faculty rating filtration request has sent to database");
-//            List<FacultyDetailProjection> facultyDetailProjections = facultyRepository.filterFacultyByRating(facultyRating);
-//            if (facultyDetailProjections.isEmpty()) {
-//                log.error("No faculty available with {} ratting", facultyRating);
-//                throw new FacultyException(Faculty_Error + facultyRating, HttpStatus.NOT_FOUND);
-//            }
-//            log.info("Faculty with rating {} fetch successfully and first faculty name is {}", facultyRating, facultyDetailProjections.getFirst().getFacultyName());
-//            return facultyDetailProjections;
-//        }
-//
-//        @Override
-//        public String updateFacultyRating(Long facultyId, double newFacultyRating) throws FacultyException {
-//            log.info("Updating rating for Faculty ID: {} with new score: {}", facultyId, newFacultyRating);
-//            Optional<Faculty> faculty = facultyRepository.findFacultyById(facultyId);
-//            if(faculty.isEmpty()){
-//                log.error("Faculty with ID {} not found", facultyId);
-//                throw new FacultyException("Faculty is not registered",HttpStatus.NOT_FOUND);
-//            }
-//            Long totalFacultyRating = faculty.get().getTotalFacultyRatingCount();
-//            double newRating = RatingCalculator.calculateRating(faculty.get().getFacultyRating(),newFacultyRating,totalFacultyRating);
-//            faculty.get().setFacultyRating(newRating);
-//            faculty.get().setTotalFacultyRatingCount(totalFacultyRating+1);
-//            log.info("Update successful for Faculty ID: {}. Rating changed to {} (Total reviews: {})",facultyId, newRating, totalFacultyRating + 1);
-//            return "Thanks for you feedBack!";
-//        }
-//    }
-//}

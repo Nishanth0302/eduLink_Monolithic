@@ -3,6 +3,7 @@ package com.cts.eduLink.application.controller;
 import com.cts.eduLink.application.classexception.SecurityException;
 import com.cts.eduLink.application.dto.AuthRequestDto;
 import com.cts.eduLink.security.utils.JwtUtils;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class AppUserController {
     private final JwtUtils jwtUtils;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody AuthRequestDto authRequestDto) {
+    public ResponseEntity<String> login(@Valid @RequestBody AuthRequestDto authRequestDto) {
         log.info("Login attempt initiated for user: {}", authRequestDto.getUserEmail());
 
         try {
