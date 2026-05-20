@@ -30,7 +30,8 @@ public class ExamController {
     @PostMapping("/register")
     public ResponseEntity<String> createExam(@Valid @RequestBody ExamCreationRequestDto request) {
         log.info("Creating a new exam: {}", request.getExamName());
-        return  ResponseEntity.status(200).body(examService.createExam(request));
+        examService.createExam(request);
+        return ResponseEntity.status(HttpStatus.OK).body("created successfully");
     }
 
     @PreAuthorize("hasRole('FACULTY')")

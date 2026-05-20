@@ -17,6 +17,7 @@ public interface ICourseService {
     String deleteCourse(Long courseId);
     List<CourseProjection> getCoursesByFaculty(Long facultyId);
     public int getFacultyCourseCount(Long facultyId );
+    //List<CourseDetailProjection> findAllAvailableCourse();
     CourseDetailByIdProjection findCourseDetailsById(Long courseId);
     String courseEnrollmentRequest(CourseEnrollmentDto courseEnrollmentDto);
     String updateCourseRating(Long courseId, double newCourseRating);

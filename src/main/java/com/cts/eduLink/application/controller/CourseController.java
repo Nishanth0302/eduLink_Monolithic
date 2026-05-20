@@ -6,7 +6,7 @@ import com.cts.eduLink.application.projection.CourseDetailByIdProjection;
 import com.cts.eduLink.application.projection.CourseDetailProjection;
 import com.cts.eduLink.application.projection.CourseProjection;
 import com.cts.eduLink.application.service.ICourseService;
-import jakarta.annotation.security.PermitAll;
+
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +31,7 @@ public class CourseController {
         log.info("{} request for a new course registration",courseRegistrationDto.getFacultyId());
         return  ResponseEntity.status(200).body(iCourseService.registerCourse(courseRegistrationDto));
     }
+
 
     @GetMapping("/findCourseDetailsById/{courseId}")
     public ResponseEntity<CourseDetailByIdProjection> findCourseById(@Valid @PathVariable Long courseId) {

@@ -72,6 +72,7 @@ public class FacultyServiceImpl implements IFacultyService {
         return "Faculty profile updated successfully!";
     }
 
+
     @Override
     public List<FacultyDetailProjection> filterFacultyByRating(int facultyRating) throws FacultyException {
         log.info("Faculty rating filtration request has sent to database");

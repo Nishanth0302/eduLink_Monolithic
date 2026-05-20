@@ -97,7 +97,7 @@ public class CourseServiceImpl implements ICourseService {
     }
 
     @Override
-    @org.springframework.transaction.annotation.Transactional
+    @Transactional
     public String deleteCourse(Long courseId) {
         log.info("Deletion request initiated for Course ID: {}", courseId);
         Course course = courseRepository.findByCourseId(courseId)

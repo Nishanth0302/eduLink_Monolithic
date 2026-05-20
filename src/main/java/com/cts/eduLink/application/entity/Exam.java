@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
+@Setter
 @Entity
 
 public class Exam {
